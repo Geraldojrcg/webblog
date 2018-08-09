@@ -6,6 +6,7 @@ import { ManagementPageComponent } from './management-page/management-page.compo
 import { HomePageComponent } from './home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PostsService } from './posts.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { PostsService } from './posts.service';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule.forRoot(),
   ],
   providers: [
     PostsService,

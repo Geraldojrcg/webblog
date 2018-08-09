@@ -41,11 +41,10 @@
     <div class="row">
       <div class="col-lg-8">
         <!-- Title -->
-        <h1 class="mt-4">Posts:</h1>
-        <hr>
-        <div class="post-preview" *ngFor="let post of posts">
-
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <h2 class="mt-4">Posts:</h2>
+        <div *ngFor="let post of posts" >
+            <div style="background-color: #f8f9fa; border-radius: 5px;">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="border-radius: 20px">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
                     <img class="d-block w-100" src='/src/css/img/post-sample-image.jpg' style="height: 300px;" alt="First slide">
@@ -59,52 +58,56 @@
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="sr-only">Next</span>
                 </a>
+            </div>
+            <div class="post-preview" style="padding-left: 20px; padding-right: 20px; padding-bottom: 20px">
+              <a href="post.html">
+                <h1 class="post-title" style="font-size: 28px; ">
+                  {{post.title}}
+                </h1>
+                <h3 class="post-subtitle" style="font-size: 20px; text-align: justify; text-justify: auto">
+                  {{post.body}}
+                </h3>
+              </a>
+              <p class="post-meta">Posted by
+                <a href="#">Web Blog</a>
+                on September 24, 2018</p>
+              <div class="clearfix">
+                  <button class="btn btn-primary float-right" style="font-size: 12px; padding: 8px" (click)="openVerticallyCentered(content)">Comment</button>
               </div>
-
-          <a href="post.html">
-            <h1 class="post-title" style="font-size: 28px">
-              {{post.title}}
-            </h1>
-            <h3 class="post-subtitle" style="font-size: 20px">
-              {{post.body}}
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Web Blog</a>
-            on September 24, 2018</p>
-          <div class="clearfix">
-              <button class="btn btn-primary float-right" style="font-size: 12px; padding: 8px">Comment</button>
-          </div>
-          <hr>
-          <div class="media mb-4" >
-              <div style="width: 50px"></div>
-              <div class="media-body" style="font-size: 14px">
-                <h6>Commenter Name</h6>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+              <br>
+              <div class="media mb-4" *ngFor="let comment of post.comment">
+                  <div style="width: 50px"></div>
+                  <div class="media-body" style="font-size: 14px; font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;">
+                    <h6>{{comment.name}}</h6>
+                    {{comment.body}}
+                  </div>
               </div>
+            </div>
           </div>
-          <hr>
-        </div>
-        <!-- Pager -->
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+        <br>
         </div>
 
       <!-- Post Content Column -->
         <!-- Comments Form -->
-        <div class="card my-4">
-          <h6 class="card-header">Leave a Comment:</h6>
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <input class="form-control" type="text" placeholder="Name"><br>
-                <input class="form-control" type="email" placeholder="Email"><br>
-                <textarea class="form-control" rows="2" placeholder="Mensage"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary" style="font-size: 12px; padding: 8px" >Submit</button>
-            </form>
+      <ng-template #content let-c="close" let-d="dismiss">
+          <div class="modal-header">
+            <h4 class="modal-title">Leave a Comment:</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-        </div>       
+          <div class="modal-body">
+              <div class="form-group">
+                  <input class="form-control" type="text" placeholder="Name"><br>
+                  <input class="form-control" type="email" placeholder="Email"><br>
+                  <textarea class="form-control" rows="2" placeholder="Mensage"></textarea>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+            <button type="submit" class="btn btn-light" >Submit</button>
+          </div>
+        </ng-template>
       </div>
 
       <!-- Sidebar Widgets Column -->

@@ -8,12 +8,16 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class PostsService {
 
-  posts_url = 'https://jsonplaceholder.typicode.com/posts';
-
+  posts_url = 'https://jsonplaceholder.typicode.com/posts/';
+  posts: any;
   constructor(private http: HttpClient) { }
   getData(): Observable<any> {
       return this.http.get(this.posts_url)
       .pipe(catchError(this.handleError('getPosts', [])));
+  }
+  getComments(id): Observable<any>  {
+    return this.http.get(this.posts_url + id + 'comments')
+    .pipe(catchError(this.handleError('getComments', [])));
   }
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
