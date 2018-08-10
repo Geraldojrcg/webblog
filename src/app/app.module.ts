@@ -6,7 +6,13 @@ import { ManagementPageComponent } from './management-page/management-page.compo
 import { HomePageComponent } from './home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PostsService } from './posts.service';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { OrderModule } from 'ngx-order-pipe';
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  { path: 'manage', component: ManagementPageComponent},
+];
 
 @NgModule({
   declarations: [
@@ -18,6 +24,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     BrowserModule,
     HttpClientModule,
     NgbModule.forRoot(),
+    OrderModule,
+    RouterModule.forRoot(
+      appRoutes,
+    )
   ],
   providers: [
     PostsService,

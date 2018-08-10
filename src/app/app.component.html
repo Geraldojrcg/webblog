@@ -13,8 +13,11 @@
               <span class="sr-only">(current)</span>
             </a>
         </li>
+        <li>
+          <a routerLink="/manage">asduyaid</a>
+        </li>
         <li class="nav-item">
-          <a class="nav-link" href="about.html">login</a>
+          <a class="nav-link" href="#" (click)="openBackDropCustomClass(content)">login</a>
       </ul>
     </div>
   </div>
@@ -42,12 +45,15 @@
       <div class="col-lg-8">
         <!-- Title -->
         <h2 class="mt-4">Posts:</h2>
-        <div *ngFor="let post of posts" >
+        <div *ngFor="let post of posts | orderBy:order : true" >
             <div style="background-color: #f8f9fa; border-radius: 5px;">
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="border-radius: 20px">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img class="d-block w-100" src='/src/css/img/post-sample-image.jpg' style="height: 300px;" alt="First slide">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="border-radius: 20px" >
+                <div class="carousel-inner" >
+                  <div class="carousel-item active" > 
+                    <img class="d-block w-100" src='http://placehold.it/600/771796' style="height: 300px;" alt="First slide">
+                  </div>
+                  <div class="carousel-item" *ngFor="let p of post.photos"> 
+                    <img class="d-block w-100" src='{{p[0].url}}' style="height: 300px;" alt="First slide">
                   </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -60,7 +66,7 @@
                 </a>
             </div>
             <div class="post-preview" style="padding-left: 20px; padding-right: 20px; padding-bottom: 20px">
-              <a href="post.html">
+              <a href="#">
                 <h1 class="post-title" style="font-size: 28px; ">
                   {{post.title}}
                 </h1>
@@ -74,40 +80,66 @@
               <div class="clearfix">
                   <button class="btn btn-primary float-right" style="font-size: 12px; padding: 8px" (click)="openVerticallyCentered(content)">Comment</button>
               </div>
+              <a href="#"><h1 class="post-title" style="font-size: 18px">Comments:</h1></a>
               <br>
               <div class="media mb-4" *ngFor="let comment of post.comment">
                   <div style="width: 50px"></div>
                   <div class="media-body" style="font-size: 14px; font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;">
-                    <h6>{{comment.name}}</h6>
+                    <h6 style="font-size: 16px">{{comment.name}}</h6>
                     {{comment.body}}
                   </div>
               </div>
             </div>
           </div>
         <br>
+          <ng-template #content let-c="close" let-d="dismiss">
+            <div class="modal-header">
+              <h4 class="modal-title">Leave a Comment:</h4>
+              <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form>
+              <div class="modal-body">
+                <div class="form-group">
+                    <input class="form-control" ng-model="new_comment.name"  type="text" placeholder="Name" required><br>
+                    <input class="form-control" ng-model="new_comment.email" type="email" placeholder="Email" required><br>
+                    <textarea class="form-control" ng-model="new_comment.body" rows="2" placeholder="Mensage" required></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+                <button type="submit" class="btn btn-success" ng-click="addComment(post)">Submit</button>
+              </div>
+            </form>
+          </ng-template>
         </div>
 
-      <!-- Post Content Column -->
-        <!-- Comments Form -->
-      <ng-template #content let-c="close" let-d="dismiss">
+        <ng-template #content let-c="close" let-d="dismiss">
           <div class="modal-header">
-            <h4 class="modal-title">Leave a Comment:</h4>
+            <h4 class="modal-title">Login:</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <form>
+            <div class="modal-body">
               <div class="form-group">
-                  <input class="form-control" type="text" placeholder="Name"><br>
-                  <input class="form-control" type="email" placeholder="Email"><br>
-                  <textarea class="form-control" rows="2" placeholder="Mensage"></textarea>
-                </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
-            <button type="submit" class="btn btn-light" >Submit</button>
-          </div>
+                  <input class="form-control" ng-model="user"  type="text" placeholder="User" required><br>
+                  <input class="form-control" ng-model="pass" type="password" placeholder="Password" required><br>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+              <button type="submit" class="btn btn-success" (click)="login(user, pass)">Submit</button>
+            </div>
+          </form>
         </ng-template>
+
+      <!-- Post Content Column -->
+        <!-- Comments Form -->
+
+      
       </div>
 
       <!-- Sidebar Widgets Column -->
