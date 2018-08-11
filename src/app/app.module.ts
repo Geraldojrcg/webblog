@@ -9,9 +9,18 @@ import { PostsService } from './posts.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrderModule } from 'ngx-order-pipe';
 import { RouterModule, Routes } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuardGuard } from './auth.guard'
+
 
 const appRoutes: Routes = [
-  { path: 'manage', component: ManagementPageComponent},
+  { path: 'manage', component: ManagementPageComponent, canActivate:[AuthGuardGuard]},
+  { path: 'home', component: HomePageComponent},
+  { path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({
@@ -27,10 +36,14 @@ const appRoutes: Routes = [
     OrderModule,
     RouterModule.forRoot(
       appRoutes,
-    )
+    ),
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     PostsService,
+    FormBuilder,
+    AuthGuardGuard,
   ],
   bootstrap: [AppComponent]
 })

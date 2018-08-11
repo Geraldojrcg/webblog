@@ -1,3 +1,177 @@
-<h1>
-  management-page works!
-</h1>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">WebBlog Management</a>
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" style="color: red" href="#" (click)="logout()">Log out</a>
+    </li>
+  </ul>
+</nav>
+<br><br>
+<div class="container">
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="modal-header">
+              <h4 class="modal-title">Create Post:</h4>
+            </div>
+            <form [formGroup]= "post"  (submit) = "addPost()">
+              <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <input type="text" class="form-control" formControlName="title"  id="inputEmail4" placeholder="Title">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <input type="text" class="form-control" formControlName="subtitle" id="inputPassword4" placeholder="Subtitle">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-6">
+                              <select class="form-control" id="exampleFormControlSelect1" formControlName="category" >
+                                  <option selected>Category...</option>
+                                  <option value="news">News</option>
+                                  <option value="events">Events</option>
+                                  <option value="books">Books</option>
+                                </select>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <input type="file" class="form-control-file"  name="images" accept="image/*" id="exampleFormControlFile1">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="6" formControlName="text" placeholder="Text" required></textarea>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success"  [disabled]="!post.valid">Create</button>
+                              </div>
+                        </div>
+
+              </div>
+            </form>
+          <div class="table-wrapper-scroll-y ">
+            <div id="table" class="table-editable">
+                <table class="table table-bordered table-responsive-md table-striped text-center">
+                    <tr>
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Date</th>                    
+                        <th class="text-center">Remove</th>
+                        <th class="text-center">Edit</th>
+                    </tr>
+                    <!-- This is our clonable table line -->
+                    <tr class="hide" *ngFor="let post of posts | orderBy: order: true">
+                        <td class="pt-3-half" contenteditable="true">{{post.title}}</td>
+                        <td class="pt-3-half" contenteditable="true">{{post.date}}</td>                      
+                        <td>
+                            <span class="table-remove"><button type="button" class="btn btn-danger" (click)="removePost(post)">Remove</button></span>
+                        </td>
+                        <td>
+                            <span class="table-remove"><button type="button" class="btn btn-primary" (click)="openVerticallyCentered(content)">Edit</button></span>
+                        </td>
+                        <ng-template #content let-c="close" let-d="dismiss">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit Post:</h4>
+                              </div>
+                              <form [formGroup]="post_update" (submit)="updatePost(post)">
+                                <div class="modal-body">
+                                      <div class="form-row">
+                                          <div class="form-group col-md-6">
+                                            <input type="text" class="form-control" value="{{post.title}}" formControlName="title"  id="inputEmail4" placeholder="Title">
+                                          </div>
+                                          <div class="form-group col-md-6">
+                                            <input type="text" class="form-control" value="{{post.subtitle}}" formControlName="subtitle" id="inputPassword4" placeholder="Subtitle">
+                                          </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <select class="form-control" id="exampleFormControlSelect1" formControlName="category" >
+                                                    <option selected>{{post.category}}</option>
+                                                    <option value="news">News</option>
+                                                    <option value="events">Events</option>
+                                                    <option value="books">Books</option>
+                                                  </select>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="file" class="form-control-file"  name="images" accept="image/*" id="exampleFormControlFile1">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                              <textarea class="form-control" rows="6" value="{{post.text}}" formControlName="text" placeholder="Text" required></textarea>
+                                              <div class="modal-footer">
+                                                  <button type="submit" class="btn btn-success" [disabled]="!post_update.valid">Update</button>
+                                                  <button type="button" class="btn btn-danger" (click)="c(close)" >Exit</button>
+                                                </div>
+                                          </div>
+                                </div>
+                              </form>
+                          </ng-template>
+                    </tr>
+                </table>
+            </div>
+          </div>
+          <br><br>
+
+
+            <div class="modal-header">
+                <h4 class="modal-title">Create Category:</h4>
+              </div>
+              <form [formGroup]="category"  (submit)= "addCategory()">
+                <div class="modal-body">
+                  <div class="form-group">
+                      <input class="form-control" formControlName="name"  type="text" placeholder="Name" required><br>
+                      <div class="modal-footer">
+                          <button type="submit" class="btn btn-success"  [disabled]="!category.valid">Create</button>
+                        </div>
+                  </div>
+                </div>
+              </form>
+              <div class="table-wrapper-scroll-y "> 
+                <div id="table" class="table-editable" >
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <tr>
+                            <th class="text-center">Category</th>                
+                            <th class="text-center">Remove</th>
+                            <th class="text-center">Edit</th>
+                        </tr>
+                        
+                        <!-- This is our clonable table line -->
+                        <tr class="hide" *ngFor="let c of categories">
+                            <td class="pt-3-half" contenteditable="true">{{c.name}}</td>
+                            <td>
+                                <span class="table-remove"><button type="button" class="btn btn-danger" (click)="removeCategory(c)">Remove</button></span>
+                            </td>
+                            <td>
+                                <span class="table-remove"><button type="button" class="btn btn-primary" (click)="openVerticallyCentered(content2)">Edit</button></span>
+                            </td>
+                            <ng-template #content2 let-c="close" let-d="dismiss">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Edit Post:</h4>
+                                  </div>
+                                  <form [formGroup]="category_update"  (submit)= "updateCategory(c)">
+                                    <div class="modal-body">
+                                      <div class="form-group">
+                                          <input class="form-control" value="{{c.name}}" formControlName="name"  type="text" placeholder="Name" required><br>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success"  [disabled]="!category_update.valid">Create</button>
+                                            <button type="button" class="btn btn-danger" (click)="c(close)" >Exit</button>
+                                          </div>
+                                      </div>
+                                    
+                                  </form>
+                              </ng-template>
+                        </tr>
+                    </table>
+                </div>
+              </div> 
+              <br><br>
+      </div>
+  </div>
+</div>
+<footer>
+    <div class="container"  style="background-color: black">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          
+        </div>
+      </div>
+    </div>
+  </footer>
